@@ -3,53 +3,51 @@ from timeit import default_timer as timer
 import random
 import sys
 
-# Divide and conquer solution to find the minimum and maximum number in a list
 
-
-def findMinAndMax(nums, left, right, min=sys.maxsize, max=-sys.maxsize):
+def findMinAndMax(arr, left, right, minimum=sys.maxsize, maximum=-sys.maxsize):
 
     # if the list contains only one element
+    if left == right:
 
-    if left == right:               # common comparison
+        if minimum > arr[right]:
+            minimum = arr[right]
 
-        if min > nums[right]:          # comparison 1
-            min = nums[right]
+        if maximum < arr[left]:
+            maximum = arr[left]
 
-        if max < nums[left]:           # comparison 2
-            max = nums[left]
-
-        return min, max
+        return minimum, maximum
 
     # if the list contains only two elements
+    elif right - left == 1:
 
-    if right - left == 1:           # common comparison
+        if arr[left] < arr[right]:
+            if minimum > arr[left]:
+                minimum = arr[left]
 
-        if nums[left] < nums[right]:      # comparison 1
-            if min > nums[left]:       # comparison 2
-                min = nums[left]
-
-            if max < nums[right]:      # comparison 3
-                max = nums[right]
+            if maximum < arr[right]:
+                maximum = arr[right]
 
         else:
-            if min > nums[right]:      # comparison 2
-                min = nums[right]
+            if minimum > arr[right]:
+                minimum = arr[right]
 
-            if max < nums[left]:       # comparison 3
-                max = nums[left]
+            if maximum < arr[left]:
+                maximum = arr[left]
 
-        return min, max
+        return minimum, maximum
 
-    # find the middle element
-    mid = (left + right) // 2
+    else:
+        # find the middle element
+        mid = (left + right) // 2
 
-    # recur for the left sublist
-    min, max = findMinAndMax(nums, left, mid, min, max)
+        # recur for the left sublist
+        minimum1, maximum1 = findMinAndMax(arr, left, mid, minimum, maximum)
 
-    # recur for the right sublist
-    min, max = findMinAndMax(nums, mid + 1, right, min, max)
+        # recur for the right sublist
+        minimum2, maximum2 = findMinAndMax(
+            arr, mid + 1, right, minimum1, maximum1)
 
-    return min, max
+        return minimum2, maximum2
 
 
 if __name__ == '__main__':
@@ -57,17 +55,17 @@ if __name__ == '__main__':
     print("Length: ", end="")
     numOfElements = int(input())
 
-    nums = [random.randrange(0, numOfElements * 10)
-            for _ in range(numOfElements)]
+    arr = [random.randrange(0, numOfElements * 10)
+           for _ in range(numOfElements)]
 
-    print("Elements:", nums)
+    print("Elements:", arr)
 
     # initialize the minimum element by INFINITY and the
     # maximum element by -INFINITY
     start = timer()
-    (minimum, maximum) = findMinAndMax(nums, 0, len(nums) - 1)
+    minimum, maximum = findMinAndMax(arr, 0, len(arr) - 1)
     end = timer()
 
-    print("Maximum:", maximum)
-    print("Minimum:", minimum)
+    print("Maximum:", arr)
+    print("Minimum:", arr)
     print("Time:", timedelta(seconds=end - start))
