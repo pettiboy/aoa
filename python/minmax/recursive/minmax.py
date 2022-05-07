@@ -4,54 +4,37 @@ import random
 import sys
 
 
-def findMinAndMax(arr, left, right, minimum=sys.maxsize, maximum=-sys.maxsize):
+def minmax(arr, l, h, minimum=sys.maxsize, maximum=-sys.maxsize):
+    if l == h:
+        return arr[l], arr[l]
 
-    # if the list contains only one element
-    if left == right:
-
-        if minimum > arr[right]:
-            minimum = arr[right]
-
-        if maximum < arr[left]:
-            maximum = arr[left]
-
-        return minimum, maximum
-
-    # if the list contains only two elements
-    elif right - left == 1:
-
-        if arr[left] < arr[right]:
-            if minimum > arr[left]:
-                minimum = arr[left]
-
-            if maximum < arr[right]:
-                maximum = arr[right]
-
+    elif h - l == 1:
+        if arr[l] < arr[h]:
+            return arr[l], arr[h]
         else:
-            if minimum > arr[right]:
-                minimum = arr[right]
-
-            if maximum < arr[left]:
-                maximum = arr[left]
-
-        return minimum, maximum
+            return arr[h], arr[l]
 
     else:
-        # find the middle element
-        mid = (left + right) // 2
+        mid = (l + h) // 2
+        minimum1, maximum1 = minmax(arr, l, mid, minimum, maximum)
+        minimum2, maximum2 = minmax(arr, mid+1, h, minimum1, maximum1)
 
-        # recur for the left sublist
-        minimum1, maximum1 = findMinAndMax(arr, left, mid, minimum, maximum)
+        # find smallest out of minimum1 and minimum2
+        if minimum1 > minimum2:
+            minimum = minimum2
+        else:
+            minimum = minimum1
 
-        # recur for the right sublist
-        minimum2, maximum2 = findMinAndMax(
-            arr, mid + 1, right, minimum1, maximum1)
+        # find largest out of maximum1 and maximum2
+        if maximum1 > maximum2:
+            maximum = maximum1
+        else:
+            maximum = maximum2
 
-        return minimum2, maximum2
+        return minimum, maximum
 
 
-if __name__ == '__main__':
-
+def main():
     print("Length: ", end="")
     numOfElements = int(input())
 
@@ -60,12 +43,14 @@ if __name__ == '__main__':
 
     print("Elements:", arr)
 
-    # initialize the minimum element by INFINITY and the
-    # maximum element by -INFINITY
     start = timer()
-    minimum, maximum = findMinAndMax(arr, 0, len(arr) - 1)
+    minimum, maximum = minmax(arr, 0, len(arr) - 1)
     end = timer()
 
-    print("Maximum:", arr)
-    print("Minimum:", arr)
+    print("Maximum:", maximum)
+    print("Minimum:", minimum)
     print("Time:", timedelta(seconds=end - start))
+
+
+if __name__ == '__main__':
+    main()
