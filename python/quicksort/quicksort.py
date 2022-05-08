@@ -3,31 +3,46 @@ from timeit import default_timer as timer
 from datetime import timedelta
 
 
-# function to find the partition position
+def partitionrand(arr, start, stop):
+    ''' This function generates random pivot,
+    swaps the first element with the pivot
+    and calls the partition function.'''
+
+    # Generating a random number between the
+    # starting index of the array and the
+    # ending index of the array.
+    randpivot = random.randrange(start, stop)
+
+    # Swapping the starting element of
+    # the array and the pivot
+    arr[start], arr[randpivot] = arr[randpivot], arr[start]
+
+    return partition(arr, start, stop)
+
+
 def partition(array, low, high):
+    '''function to find the partition position'''
 
     # choose the rightmost element as pivot
     pivot = array[high]
 
     # pointer for greater element
-    i = low - 1
+    i = low
 
     # traverse through all elements
     # compare each element with pivot
     for j in range(low, high):
+        # if element smaller than pivot is found
         if array[j] <= pivot:
-            # if element smaller than pivot is found
             # swap it with the greater element pointed by i
+            (array[i], array[j]) = (array[j], array[i])
             i = i + 1
 
-            # swapping element at i with element at j
-            (array[i], array[j]) = (array[j], array[i])
-
     # swap the pivot element with the greater element specified by i
-    (array[i + 1], array[high]) = (array[high], array[i + 1])
+    (array[i], array[high]) = (array[high], array[i])
 
     # return the position from where partition is done
-    return i + 1
+    return i
 
 
 def quickSort(array, low, high):
@@ -37,6 +52,9 @@ def quickSort(array, low, high):
         # element smaller than pivot are on the left
         # element greater than pivot are on the right
         pi = partition(array, low, high)
+
+        # for randomized quick sort
+        # pi = partitionrand(array, low, high)
 
         # recursive call on the left of pivot
         quickSort(array, low, pi - 1)
