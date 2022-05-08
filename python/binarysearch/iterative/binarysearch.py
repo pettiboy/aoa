@@ -4,17 +4,11 @@ from datetime import timedelta
 
 
 def binarySearch(list, x, low, high):
-
-    iterations = 0
-
     # Repeat until the pointers low and high meet each other
     while low <= high:
-        iterations += 1
-
         mid = low + (high - low) // 2
 
         if list[mid] == x:
-            print("number of iterations:", iterations)
             return mid
 
         elif list[mid] < x:
@@ -23,7 +17,6 @@ def binarySearch(list, x, low, high):
         else:
             high = mid - 1
 
-    print("number of iterations:", iterations)
     return -1
 
 
