@@ -1,3 +1,5 @@
+# 0/1 knapsack using dynamic programming
+
 ## Explaination
 
 Dynamic Programming approach divides the problem to be solved into subproblems.
