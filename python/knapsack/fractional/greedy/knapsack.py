@@ -1,46 +1,47 @@
 class ItemValue:
-    def __init__(self, wt, val, ind):
-        self.wt = wt
-        self.val = val
-        self.ind = ind
-        self.cost = val // wt
+    def __init__(self, profit, weight, index):
+        self.index = index
+        self.profit = profit
+        self.weight = weight
+        self.cost = profit // weight
 
     def __lt__(self, other):
         return self.cost < other.cost
 
 
-class FractionalKnapSack:
-    """Time Complexity O(n log n)"""
-    @staticmethod
-    def getMaxValue(wt, val, capacity):
-        """function to get maximum value """
-        iVal = []
-        for i in range(len(wt)):
-            iVal.append(ItemValue(wt[i], val[i], i))
+def calculate_max_value(weights, values, capacity):
+    items = []
+    for i in range(len(weights)):
+        items.append(ItemValue(weights[i], values[i], i))
 
-        # sorting items by value
-        iVal.sort(reverse=True)
+    # sorting items by value
+    items.sort(reverse=True)
 
-        totalValue = 0
-        for i in iVal:
-            curWt = int(i.wt)
-            curVal = int(i.val)
-            if capacity - curWt >= 0:
-                capacity -= curWt
-                totalValue += curVal
-            else:
-                fraction = capacity / curWt
-                totalValue += curVal * fraction
-                capacity = int(capacity - (curWt * fraction))
-                break
-        return totalValue
+    total_value = 0
+    for i in items:
+        current_weight = int(i.weight)
+        current_profit = int(i.profit)
+
+        if capacity - current_weight >= 0:
+            capacity -= current_weight
+            total_value += current_profit
+        else:
+            fraction = capacity / current_weight
+            total_value += current_profit * fraction
+            capacity = int(capacity - (current_weight * fraction))
+            break
+
+    return total_value
 
 
-# Driver Code
-if __name__ == "__main__":
-    wt = [10, 40, 20, 30]
-    val = [60, 40, 100, 120]
+def main():
+    weights = [10, 40, 20, 30]
+    values = [60, 40, 100, 120]
     capacity = 50
 
-    maxValue = FractionalKnapSack.getMaxValue(wt, val, capacity)
-    print("Maximum value in Knapsack =", maxValue)
+    max_value = calculate_max_value(weights, values, capacity)
+    print("Maximum value in Knapsack =", max_value)
+
+
+if __name__ == "__main__":
+    main()
