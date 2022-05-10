@@ -1,4 +1,3 @@
-# Dijkstra's Algorithm in Python
 import sys
 
 # Providing the graph
@@ -25,8 +24,9 @@ def to_be_visited():
     global visited_and_distance
     v = -10
     for index in range(num_of_vertices):
-        if visited_and_distance[index][0] == 0 and \
-                (v < 0 or visited_and_distance[index][1] <= visited_and_distance[v][1]):
+        if visited_and_distance[index][0] == 0 \
+            and (v < 0 or visited_and_distance[index][1] <=
+                 visited_and_distance[v][1]):
             v = index
     return v
 
