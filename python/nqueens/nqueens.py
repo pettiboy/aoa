@@ -56,9 +56,9 @@ def solveNQUtil(board, col):
             if solveNQUtil(board, col + 1) == True:
                 return True
 
-            # If placing queen in board[i][col
+            # If placing queen in board[i][col]
             # doesn't lead to a solution, then
-            # queen from board[i][col]
+            # remove queen from board[i][col]
             board[i][col] = 0
 
     # if the queen can not be placed in any row in
