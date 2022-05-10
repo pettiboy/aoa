@@ -1,6 +1,5 @@
-import sys
+from sys import maxsize
 
-# Providing the graph
 vertices = [[0, 0, 1, 1, 0, 0, 0],
             [0, 0, 1, 0, 0, 1, 0],
             [1, 1, 0, 1, 1, 0, 0],
@@ -20,35 +19,61 @@ edges = [[0, 0, 1, 2, 0, 0, 0],
 
 def main():
 
-    num_of_vertices = len(vertices[0])
+    global visited_and_distance
+    global number_of_vertices
 
+    number_of_vertices = len(vertices[0])
+
+    # The first element of the lists inside visited_and_distance
+    # denotes if the vertex has been visited.
+    # The second element of the lists inside the visited_and_distance
+    # denotes the distance from the source.
     visited_and_distance = [[0, 0]]
-    for i in range(num_of_vertices-1):
-        visited_and_distance.append([0, sys.maxsize])
+    for i in range(number_of_vertices-1):
+        visited_and_distance.append([0, maxsize])
 
-    for vertex in range(num_of_vertices):
-
-        # Find next vertex to be visited
+    for vertex in range(number_of_vertices):
+        # Finding the next vertex to be visited.
         to_visit = to_be_visited()
-        for neighbor_index in range(num_of_vertices):
 
-            # Updating new distances
+        for neighbor_index in range(number_of_vertices):
+
+            # Calculating the new distance for all unvisited neighbours
+            # of the chosen vertex.
             if vertices[to_visit][neighbor_index] == 1 and \
                     visited_and_distance[neighbor_index][0] == 0:
-                new_distance = visited_and_distance[to_visit][1] \
-                    + edges[to_visit][neighbor_index]
+
+                new_distance = visited_and_distance[to_visit][1] + \
+                    edges[to_visit][neighbor_index]
+
+                # Updating the distance of the neighbor if its current distance
+                # is greater than the distance that has just been calculated
                 if visited_and_distance[neighbor_index][1] > new_distance:
                     visited_and_distance[neighbor_index][1] = new_distance
 
-            visited_and_distance[to_visit][0] = 1
+        # Visiting the vertex found earlier
+        visited_and_distance[to_visit][0] = 1
 
     i = 0
 
-    # Printing the distance
+    # Printing out the shortest distance from the source to each vertex
     for distance in visited_and_distance:
-        print("Distance of ", chr(ord('a') + i),
-              " from source vertex: ", distance[1])
+        print("The shortest distance of ", chr(ord('a') + i),
+              " from the source vertex a is:", distance[1])
         i = i + 1
+
+
+# Function to find out which of the unvisited node
+# needs to be visited next
+def to_be_visited():
+    v = -10
+    # Choosing the vertex with the minimum distance
+    for index in range(number_of_vertices):
+        if visited_and_distance[index][0] == 0 \
+            and (v < 0 or visited_and_distance[index][1] <=
+                 visited_and_distance[v][1]):
+            v = index
+    return v
 
 
 if __name__ == "__main__":
